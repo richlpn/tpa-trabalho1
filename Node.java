@@ -41,6 +41,15 @@ public class Node <T> {
         this.rightNode = rightNode;
     }
 
+    public int numChildren () {
+        int res = 0;
+        if (this.getLeftNode() != null)
+            ++res;
+        if (this.getRightNode() != null)
+            ++res;
+        return res;
+    }
+
     @Override
     public String toString() {
         return "Node{" +

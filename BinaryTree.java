@@ -44,14 +44,6 @@ public class BinaryTree<T> {
             return getMaximum(root.getRightNode());
         return root;
     }
-    private static int numChildren (Node<T> node) {
-        int res = 0;
-        if (node.getLeftNode() != null)
-            ++res;
-        if (node.getRightNode() != null)
-            ++res;
-        return res;
-    }
     private Node<T> removeLeaf (Node<T> leaf, Node<T> leftParent
                                 Node<T> rightParent) {
         // removes leaf from tree and returns it
@@ -72,12 +64,11 @@ public class BinaryTree<T> {
         if (branch.getLeftNode() != null) {
             child = branch.getLeftNode();
             branch.setLeftNode(null);
-        } else if (branch.getRightNode()) {
+        } else if (branch.getRightNode() != null) {
             child = branch.getRightNode();
             branch.setRightNode(null);
-        } else {
-            //
         }
+
         if (leftParent != null) {
             leftParent.setRightNode(child);
         } else if (rightParent != null) {
@@ -88,42 +79,43 @@ public class BinaryTree<T> {
         return branch;
     }
 
-    public static Node<T> removeMinimum (Node<T> root, Node<T> parent) {
+    private Node<T> removeMinimum (Node<T> root, Node<T> parent) {
         if (root.getLeftNode() != null)
             return removeMinimum(root.getLeftNode(), root);
 
-        if (root.getLeftNode() != null)
-            parent.setLeftNode(root.getLeftNode());
-        else if (root.getRightNode() != null)
+        if (root.getRightNode() != null)
             parent.setLeftNode(root.getRightNode());
         else
             parent.setLeftNode(null);
+        root.setRightNode(null);
         return root;
     }
-    public static Node<T> removeMaximum (Node<T> root, Node<T> parent) {
+    private Node<T> removeMaximum (Node<T> root, Node<T> parent) {
         if (root.getRightNode() != null)
             return removeMaximum(root.getRightNode(), root);
 
-        if (root.getLeftNode() != null)
+        else if (root.getLeftNode() != null)
             parent.setRightNode(root.getLeftNode());
-        else if (root.getRightNode() != null)
-            parent.setRightNode(root.getRightNode());
         else
             parent.setLeftNode(null);
+        root.setLeftNode(null);
         return root;
     }
 
-    public static Node<T> remove (T value, Node<T> root, Node<T> parent,
-                                  boolean rootIsLeftChild) {
-        // explicação do algoritmo, cenas do proximo capitulo
-        // se deus existe, esse codigo vai funcionar
-        // setar children do no retornado?
+    public void remove (T value) {
+        remove(value, this.root, null, false);
+    }
+
+    private Node<T> remove (T value, Node<T> root, Node<T> parent,
+                            boolean rootIsLeftChild) {
         if (comp.compare(root.getValue(), value) < 0) {
             return remove(value, root.getRightNode(), root, false);
         } else if (comp.compare(root.getValue(), value) == 0) {
-            int nChildren = numChildren(root);
+            int nChildren = root.numChildren();
             if (nChildren == 0) {
-                if (rootIsLeftChild) {
+                if (parent == null) {
+                    this.root = null;
+                } if (rootIsLeftChild) {
                     parent.setLeftNode(null);
                 } else {
                     parent.setRightNode(null);
@@ -131,13 +123,17 @@ public class BinaryTree<T> {
                 return root;
             } else if (nChildren == 1) {
                 if (root.getLeftNode() != null) {
-                    if (rootIsLeftChild) {
+                    if (parent == null) {
+                        this.root = root.getLeftNode();
+                    } else if (rootIsLeftChild) {
                         parent.setLeftNode(root.getLeftNode());
                     } else {
                         parent.setRightNode(root.getLeftNode());
                     }
                 } else {
-                    if (rootIsLeftChild) {
+                    if (parent == null) {
+                        this.root = root.getRightNode();
+                    } else if (rootIsLeftChild) {
                         parent.setLeftNode(root.getRightNode());
                     } else {
                         parent.setRightNode(root.getRightNode());
@@ -148,7 +144,9 @@ public class BinaryTree<T> {
                 Node<T> newRoot = removeMinimum(root.getLeftNode(), root);
                 newRoot.setLeftNode(root.getLeftNode());
                 newRoot.setRightNode(root.getRightNode());
-                if (rootIsLeftChild)
+                if (parent == null) {
+                    this.root = newRoot;
+                } else if (rootIsLeftChild)
                     parent.setLeftNode(newRoot);
                 else
                     parent.setRightNode(newRoot);
@@ -158,22 +156,5 @@ public class BinaryTree<T> {
             return remove(value, root.getLeftNode(), root, true);
         }
     }
-
-    private boolean remove (T value) {
-        // Tries to remove a node with value 'value' off of the tree
-        // Returns true if it succeeds, false otherwise
-        if (comp.compare(root.getValue(), value) < 0) {
-           return remove(root.getRightNode(), value);
-        } else if (comp.compare(root.getValue(), value) == 0) {
-
-            if (root.getLeftNode() != null) {
-
-            }
-
-        } else {
-           return remove(root.getLeftNode(), value);
-        }
-    }
-
 
 }
