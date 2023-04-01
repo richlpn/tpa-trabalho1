@@ -146,4 +146,36 @@ public class BinaryTree<T> {
         return size(node.getLeftNode()) + size(node.getRightNode()) + 1;
 
     }
+    public void printPreOrder () {
+        printPreOrder(root);
+    }
+    private void printPreOrder(Node<T> node) {
+        if (node != null) {
+            System.out.println(node.getValue());
+            printPreOrder(node.getLeftNode());
+            printPreOrder(node.getRightNode());
+        }
+    }
+
+    public void printInOrder () {
+        printInOrder(root);
+    }
+    private void printInOrder (Node<T> node) {
+        if (node != null) {
+            printInOrder(node.getLeftNode());
+            System.out.println(node.getValue());
+            printInOrder(node.getRightNode());
+        }
+    }
+
+    public void printPostOrder () {
+        printPostOrder(root);
+    }
+    private void printPostOrder (Node<T> node) {
+        if (node != null) {
+            printPostOrder(node.getLeftNode());
+            printPostOrder(node.getRightNode());
+            System.out.println(node.getValue());
+        }
+    }
 }
