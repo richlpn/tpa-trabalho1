@@ -40,11 +40,17 @@ public class BinaryTree<T> {
     }
     private T search(Node<T> node, T value){
         if(node == null) return null;
+        int res = comp.compare(root.getValue(), value);
 
-        else if (comp.compare(root.getValue(), value) < 0) return search(root.getLeftNode(), value);
+        //Se o valor é menor que o valor no Nó atual procurar nos filhos a esquerda
+        if ( res < 0) return search(root.getLeftNode(), value);
+
+        //Se o valor foi encontrado
+        else if (res == 0) return node.getValue();
+
+        //Se o valor é menor que o valor no Nó atual procurar nos filhos a direita
         else return search(root.getRightNode(), value);
     }
-
     private Node<T> removeMinimum (Node<T> root, Node<T> parent) {
         if (root.getLeftNode() != null)
             return removeMinimum(root.getLeftNode(), root);
@@ -122,5 +128,4 @@ public class BinaryTree<T> {
             return remove(value, root.getLeftNode(), root, true);
         }
     }
-
 }
