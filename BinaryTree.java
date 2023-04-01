@@ -34,51 +34,6 @@ public class BinaryTree<T> {
         else return search(root.getRightNode(), value);
     }
 
-    private static Node<T> getMinimum (Node<T> root) {
-        if (root.getLeftNode() != null)
-            return getMinimum(root.getLeftNode());
-        return root;
-    }
-    private static Node<T> getMaximum (Node<T> root) {
-        if (root.getRightNode() != null)
-            return getMaximum(root.getRightNode());
-        return root;
-    }
-    private Node<T> removeLeaf (Node<T> leaf, Node<T> leftParent
-                                Node<T> rightParent) {
-        // removes leaf from tree and returns it
-        if (leftParent != null) {
-            leftParent.setRightNode(null);
-        } else if (rightParent != null) {
-            rightParent.setLeftNode(null); //
-        } else {
-            root = null;
-        }
-        return leaf;
-    }
-
-    private Node<T> removeBranchOneChild (Node<T> branch, Node<T> leftParent,
-                                          Node<T> rightParent) {
-        // removes branch with one child from tree and returns it
-        Node<T> child;
-        if (branch.getLeftNode() != null) {
-            child = branch.getLeftNode();
-            branch.setLeftNode(null);
-        } else if (branch.getRightNode() != null) {
-            child = branch.getRightNode();
-            branch.setRightNode(null);
-        }
-
-        if (leftParent != null) {
-            leftParent.setRightNode(child);
-        } else if (rightParent != null) {
-            rightParent.setLeftNode(child);
-        } else {
-            root = child;
-        }
-        return branch;
-    }
-
     private Node<T> removeMinimum (Node<T> root, Node<T> parent) {
         if (root.getLeftNode() != null)
             return removeMinimum(root.getLeftNode(), root);
@@ -115,7 +70,7 @@ public class BinaryTree<T> {
             if (nChildren == 0) {
                 if (parent == null) {
                     this.root = null;
-                } if (rootIsLeftChild) {
+                } else if (rootIsLeftChild) {
                     parent.setLeftNode(null);
                 } else {
                     parent.setRightNode(null);
