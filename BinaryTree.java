@@ -37,7 +37,7 @@ public class BinaryTree<T> {
         //Se o valor foi encontrado
         else if (res == 0) return node.getValue();
 
-        //Se o valor é menor que o valor no Nó atual procurar nos filhos a esquerda
+        //Se o valor é menor que o valor no Nó atual procurar nos filhos a direita
         else return search(root.getRightNode(), value);
     }
 
