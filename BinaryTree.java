@@ -205,4 +205,26 @@ public class BinaryTree<T> {
             System.out.println(node.getValue());
         }
     }
+
+    public Node<T> getSmallestNode () {
+        if (root == null)
+            return null;
+        return getSmallestNode(root.getLeftNode());
+    }
+    private Node<T> getSmallestNode (Node<T> node) {
+        if (node.getLeftNode() == null)
+            return node;
+        return getSmallestNode(node.getLeftNode());
+    }
+
+    public Node<T> getBiggestNode () {
+        if (root == null)
+            return null;
+        return getBiggestNode(root.getRightNode());
+    }
+    private Node<T> getBiggestNode (Node<T> node) {
+        if (node.getRightNode() == null)
+            return node;
+        return getBiggestNode(node.getRightNode());
+    }
 }
