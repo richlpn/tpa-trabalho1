@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class BinaryTree<T> {
@@ -204,6 +205,30 @@ public class BinaryTree<T> {
             printPostOrder(node.getRightNode());
             System.out.println(node.getValue());
         }
+    }
+
+    public void printLevelOrder () {
+        // funciona pfv
+        if (root == null)
+            return;
+
+        ArrayList<Node<T>>[] levels = new ArrayList[height() + 1];
+        for (int i = 0; i < height() + 1; ++i) {
+            levels[i] = new ArrayList<Node<T>>();
+        }
+
+        printLeverOrder(root, 0, levels);
+
+        for (ArrayList<Node<T>> level : levels)
+            for (Node<T> node : level)
+                System.out.println(node.getValue());
+    }
+    private void printLeverOrder (Node<T> node, int level, ArrayList<Node<T>>[] levels) {
+        if (node == null)
+            return;
+        levels[level].add(node);
+        printLeverOrder(node.getLeftNode(), level + 1, levels);
+        printLeverOrder(node.getRightNode(), level + 1, levels);
     }
 
     public Node<T> getSmallestNode () {
