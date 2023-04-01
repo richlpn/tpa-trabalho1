@@ -9,11 +9,12 @@ public class BinaryTree<T> {
     }
 
 
-    public void insert(T value){
+    public void insert(T value) {
         if (root == null)
             this.root = new Node<T>(value);
         else insert(this.root, value);
     }
+
     private void insert(Node<T> node, T value) {
         if (comp.compare(node.getValue(), value) < 0) {
 
@@ -33,25 +34,27 @@ public class BinaryTree<T> {
             System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
     }
 
-    public T search(T value){
-        if(comp.compare(this.root.getValue(), value) == 0) return root.getValue();
+    public T search(T value) {
+        if (comp.compare(this.root.getValue(), value) == 0) return root.getValue();
 
         return search(root, value);
     }
-    private T search(Node<T> node, T value){
-        if(node == null) return null;
+
+    private T search(Node<T> node, T value) {
+        if (node == null) return null;
         int res = comp.compare(root.getValue(), value);
 
         //Se o valor é menor que o valor no Nó atual procurar nos filhos a esquerda
-        if ( res < 0) return search(root.getLeftNode(), value);
+        if (res < 0) return search(root.getLeftNode(), value);
 
-        //Se o valor foi encontrado
+            //Se o valor foi encontrado
         else if (res == 0) return node.getValue();
 
-        //Se o valor é menor que o valor no Nó atual procurar nos filhos a direita
+            //Se o valor é menor que o valor no Nó atual procurar nos filhos a direita
         else return search(root.getRightNode(), value);
     }
-    private Node<T> removeMinimum (Node<T> root, Node<T> parent) {
+
+    private Node<T> removeMinimum(Node<T> root, Node<T> parent) {
         if (root.getLeftNode() != null)
             return removeMinimum(root.getLeftNode(), root);
 
@@ -62,7 +65,8 @@ public class BinaryTree<T> {
         root.setRightNode(null);
         return root;
     }
-    private Node<T> removeMaximum (Node<T> root, Node<T> parent) {
+
+    private Node<T> removeMaximum(Node<T> root, Node<T> parent) {
         if (root.getRightNode() != null)
             return removeMaximum(root.getRightNode(), root);
 
@@ -74,12 +78,12 @@ public class BinaryTree<T> {
         return root;
     }
 
-    public void remove (T value) {
+    public void remove(T value) {
         remove(value, this.root, null, false);
     }
 
-    private Node<T> remove (T value, Node<T> root, Node<T> parent,
-                            boolean rootIsLeftChild) {
+    private Node<T> remove(T value, Node<T> root, Node<T> parent,
+                           boolean rootIsLeftChild) {
         if (comp.compare(root.getValue(), value) < 0) {
             return remove(value, root.getRightNode(), root, false);
         } else if (comp.compare(root.getValue(), value) == 0) {
@@ -127,5 +131,19 @@ public class BinaryTree<T> {
         } else {
             return remove(value, root.getLeftNode(), root, true);
         }
+
+    }
+
+    public int size() {
+        if (root == null) return 0;
+        
+        return size(root);
+    }
+
+    private int size(Node<T> node) {
+        if (node == null) return 0;
+
+        return size(node.getLeftNode()) + size(node.getRightNode()) + 1;
+
     }
 }
