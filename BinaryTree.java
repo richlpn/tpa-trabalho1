@@ -10,16 +10,27 @@ public class BinaryTree<T> {
 
 
     public void insert(T value){
-        if(root == null) this.root = new Node<T>(value);
+        if (root == null)
+            this.root = new Node<T>(value);
         else insert(this.root, value);
     }
-    private void insert(Node<T> node, T value){
-        if(node == null) node = new Node<T>(value);
+    private void insert(Node<T> node, T value) {
+        if (comp.compare(node.getValue(), value) < 0) {
 
-        else if(comp.compare(node.getValue(), value) < 0)
-            insert(node.getLeftNode(), value);
-        else
-            insert(node.getRightNode(), value);
+            if (node.getRightNode() == null)
+                node.setRightNode(new Node<T>(value));
+            else
+                insert(node.getRightNode(), value);
+
+        } else if (comp.compare(node.getValue(), value) > 0) {
+
+            if (node.getLeftNode() == null)
+                node.setLeftNode(new Node<T>(value));
+            else
+                insert(node.getLeftNode(), value);
+
+        } else
+            System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
     }
 
     public T search(T value){
