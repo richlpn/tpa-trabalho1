@@ -10,16 +10,27 @@ public class BinaryTree<T> {
 
 
     public void insert(T value){
-        if(root == null) this.root = new Node<T>(value);
+        if (root == null)
+            this.root = new Node<T>(value);
         else insert(this.root, value);
     }
-    private void insert(Node<T> node, T value){
-        if(node == null) node = new Node<T>(value);
+    private void insert(Node<T> node, T value) {
+        if (comp.compare(node.getValue(), value) < 0) {
 
-        else if(comp.compare(node.getValue(), value) < 0)
-            insert(node.getLeftNode(), value);
-        else
-            insert(node.getRightNode(), value);
+            if (node.getRightNode() == null)
+                node.setRightNode(new Node<T>(value));
+            else
+                insert(node.getRightNode(), value);
+
+        } else if (comp.compare(node.getValue(), value) > 0) {
+
+            if (node.getLeftNode() == null)
+                node.setLeftNode(new Node<T>(value));
+            else
+                insert(node.getLeftNode(), value);
+
+        } else
+            System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
     }
 
     public T search(T value){
@@ -37,9 +48,84 @@ public class BinaryTree<T> {
         //Se o valor foi encontrado
         else if (res == 0) return node.getValue();
 
-        //Se o valor é menor que o valor no Nó atual procurar nos filhos a esquerda
+        //Se o valor é menor que o valor no Nó atual procurar nos filhos a direita
         else return search(root.getRightNode(), value);
     }
+    private Node<T> removeMinimum (Node<T> root, Node<T> parent) {
+        if (root.getLeftNode() != null)
+            return removeMinimum(root.getLeftNode(), root);
 
+        if (root.getRightNode() != null)
+            parent.setLeftNode(root.getRightNode());
+        else
+            parent.setLeftNode(null);
+        root.setRightNode(null);
+        return root;
+    }
+    private Node<T> removeMaximum (Node<T> root, Node<T> parent) {
+        if (root.getRightNode() != null)
+            return removeMaximum(root.getRightNode(), root);
 
+        else if (root.getLeftNode() != null)
+            parent.setRightNode(root.getLeftNode());
+        else
+            parent.setLeftNode(null);
+        root.setLeftNode(null);
+        return root;
+    }
+
+    public void remove (T value) {
+        remove(value, this.root, null, false);
+    }
+
+    private Node<T> remove (T value, Node<T> root, Node<T> parent,
+                            boolean rootIsLeftChild) {
+        if (comp.compare(root.getValue(), value) < 0) {
+            return remove(value, root.getRightNode(), root, false);
+        } else if (comp.compare(root.getValue(), value) == 0) {
+            int nChildren = root.numChildren();
+            if (nChildren == 0) {
+                if (parent == null) {
+                    this.root = null;
+                } else if (rootIsLeftChild) {
+                    parent.setLeftNode(null);
+                } else {
+                    parent.setRightNode(null);
+                }
+                return root;
+            } else if (nChildren == 1) {
+                if (root.getLeftNode() != null) {
+                    if (parent == null) {
+                        this.root = root.getLeftNode();
+                    } else if (rootIsLeftChild) {
+                        parent.setLeftNode(root.getLeftNode());
+                    } else {
+                        parent.setRightNode(root.getLeftNode());
+                    }
+                } else {
+                    if (parent == null) {
+                        this.root = root.getRightNode();
+                    } else if (rootIsLeftChild) {
+                        parent.setLeftNode(root.getRightNode());
+                    } else {
+                        parent.setRightNode(root.getRightNode());
+                    }
+                }
+                return root;
+            } else {
+                Node<T> newRoot = removeMinimum(root.getLeftNode(), root);
+                newRoot.setLeftNode(root.getLeftNode());
+                newRoot.setRightNode(root.getRightNode());
+                if (parent == null) {
+                    this.root = newRoot;
+                } else if (rootIsLeftChild)
+                    parent.setLeftNode(newRoot);
+                else
+                    parent.setRightNode(newRoot);
+                return root;
+            }
+        } else {
+            return remove(value, root.getLeftNode(), root, true);
+        }
+    }
 }
