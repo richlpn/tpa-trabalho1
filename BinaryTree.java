@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class BinaryTree<T> {
@@ -146,6 +147,33 @@ public class BinaryTree<T> {
         return size(node.getLeftNode()) + size(node.getRightNode()) + 1;
 
     }
+
+
+    public int height () {
+        if (root == null)
+            return -1;
+        return height(root, 0);
+    }
+    private int height (Node<T> node, int heightAccumulator) {
+        int heightLeft = -1, heightRight = -1;
+
+        if (node.getLeftNode() != null) {
+            heightLeft = height(node.getLeftNode(), heightAccumulator + 1);
+        }
+
+        if (node.getRightNode() != null) {
+            heightLeft = height(node.getRightNode(), heightAccumulator + 1);
+        }
+
+        if (heightLeft > heightRight)
+            return heightLeft;
+        else if (heightLeft < heightRight)
+            return heightRight;
+        else if (heightLeft != -1)
+            return heightLeft;
+        return heightAccumulator;
+    }
+
     public void printPreOrder () {
         printPreOrder(root);
     }
@@ -177,5 +205,51 @@ public class BinaryTree<T> {
             printPostOrder(node.getRightNode());
             System.out.println(node.getValue());
         }
+    }
+
+    public void printLevelOrder () {
+        // funciona pfv
+        if (root == null)
+            return;
+
+        ArrayList<Node<T>>[] levels = new ArrayList[height() + 1];
+        for (int i = 0; i < height() + 1; ++i) {
+            levels[i] = new ArrayList<Node<T>>();
+        }
+
+        printLeverOrder(root, 0, levels);
+
+        for (ArrayList<Node<T>> level : levels)
+            for (Node<T> node : level)
+                System.out.println(node.getValue());
+    }
+    private void printLeverOrder (Node<T> node, int level, ArrayList<Node<T>>[] levels) {
+        if (node == null)
+            return;
+        levels[level].add(node);
+        printLeverOrder(node.getLeftNode(), level + 1, levels);
+        printLeverOrder(node.getRightNode(), level + 1, levels);
+    }
+
+    public Node<T> getSmallestNode () {
+        if (root == null)
+            return null;
+        return getSmallestNode(root.getLeftNode());
+    }
+    private Node<T> getSmallestNode (Node<T> node) {
+        if (node.getLeftNode() == null)
+            return node;
+        return getSmallestNode(node.getLeftNode());
+    }
+
+    public Node<T> getBiggestNode () {
+        if (root == null)
+            return null;
+        return getBiggestNode(root.getRightNode());
+    }
+    private Node<T> getBiggestNode (Node<T> node) {
+        if (node.getRightNode() == null)
+            return node;
+        return getBiggestNode(node.getRightNode());
     }
 }
