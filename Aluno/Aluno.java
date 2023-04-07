@@ -47,7 +47,9 @@ public class Aluno {
     @Override
     public String toString() {
         return "Aluno{" +
-                "id=" + id +
+                "id=" + id + ";" +
+                "name=" + name + ";" +
+                "age=" + age + ";" +
                 '}';
     }
 }

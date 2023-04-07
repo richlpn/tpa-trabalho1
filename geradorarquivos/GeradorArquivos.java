@@ -21,7 +21,7 @@ public class GeradorArquivos {
     final char vogais[] = {'a', 'e', 'i', 'o','u','A','E','I','O','U'};
     final Random rand = new Random();
     final int matriculaBase = 2000000000;
-    
+
     private enum TipoArquivo{ORDENADO, BALANCEADO;};
     
     private boolean ehVogal (char c){
@@ -139,7 +139,7 @@ public class GeradorArquivos {
         que pode ser ORDENADO ou BALANCEADO*/
         
         int TAM = 10000000;
-        long tempoInicial = System. currentTimeMillis();        
+        long tempoInicial = System. currentTimeMillis();
         g.geraArquivo(TAM,TipoArquivo.BALANCEADO);
         long tempoFinal = System. currentTimeMillis();
         

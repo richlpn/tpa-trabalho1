@@ -7,16 +7,30 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         AlunoComparators.CompareByName compareByName = new AlunoComparators.CompareByName();
+        AlunoComparators.CompareByID compareByID = new AlunoComparators.CompareByID();
         BinaryTree<Aluno> arvoreNome = new BinaryTree<>(compareByName);
+        BinaryTree<Aluno> arvoreMatricula = new BinaryTree<>(compareByID);
 
-        String[][] alunos = readFile("entradaBalanceada10000000.txt");
+        System.out.println("Lendo arquivo de entrada.");
+        String[][] alunos = readFile("entradaBalanceada1000.txt");
+        System.out.println("Arquivo de entrada lido.");
         Aluno aluno;
 
+        System.out.println("Gravando dados de alunos.");
         for(String[] dados : alunos){
             aluno = new Aluno(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]));
+            arvoreMatricula.insert(aluno);
             arvoreNome.insert(aluno);
         }
-        System.out.println(arvoreNome.size());
+        System.out.println("Dados de alunos gravados.");
+        System.out.println("Tamanho da arvore por nome: " + arvoreNome.size());
+        System.out.println("Tamanho da arvore por matricula: " + arvoreMatricula.size());
+        System.out.println();
+
+        CommandLineInterface cli = new CommandLineInterface(arvoreMatricula,
+                                                            arvoreNome);
+        // arvoreMatricula.printPreOrder();
+        cli.main();
     }
 
     private static String[][] readFile(String fileName) {
