@@ -35,25 +35,46 @@ public class BinaryTree<T> {
             System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
     }
 
-    public T search(T value) {
-        if (comp.compare(this.root.getValue(), value) == 0) return root.getValue();
-
-        return search(root, value);
+    public T search (T value) {
+        Node<T> current = root;
+        int count = 0;
+        while (current != null) {
+            ++count;
+            if (comp.compare(current.getValue(), value) == 0) {
+                System.out.println("Numero de nos percorridos ate encontrar elemento: " + count);
+                return current.getValue();
+            } else if (comp.compare(current.getValue(), value) < 0)
+                current = current.getRightNode();
+            else
+                current = current.getLeftNode();
+        }
+        return null;
     }
 
-    private T search(Node<T> node, T value) {
-        if (node == null) return null;
-        int res = comp.compare(root.getValue(), value);
+    // public T search(T value) {
+    //     if (comp.compare(this.root.getValue(), value) == 0){
+    //         return root.getValue();
+    //     }
 
-        //Se o valor é menor que o valor no Nó atual procurar nos filhos a esquerda
-        if (res < 0) return search(root.getLeftNode(), value);
+    //     return search(root, value);
+    // }
 
-            //Se o valor foi encontrado
-        else if (res == 0) return node.getValue();
+    // private T search(Node<T> node, T value) {
+    //     if (node == null)
+    //         return null;
+    //     int res = comp.compare(node.getValue(), value);
 
-            //Se o valor é menor que o valor no Nó atual procurar nos filhos a direita
-        else return search(root.getRightNode(), value);
-    }
+    //     // Se o no atual for menor que o valor a ser achado, procurar nos a
+    //     // direita
+    //     if (res < 0) return search(node.getRightNode(), value);
+
+    //         //Se o valor foi encontrado
+    //     else if (res == 0) return node.getValue();
+
+    //         // Se o no atual for maior que o valor a ser achado, procurar nos
+    //         // a esquerda
+    //     else return search(root.getLeftNode(), value);
+    //}
 
     private Node<T> removeMinimum(Node<T> root, Node<T> parent) {
         if (root.getLeftNode() != null)
@@ -79,8 +100,8 @@ public class BinaryTree<T> {
         return root;
     }
 
-    public void remove(T value) {
-        remove(value, this.root, null, false);
+    public T remove(T value) {
+        return remove(value, this.root, null, false).getValue();
     }
 
     private Node<T> remove(T value, Node<T> root, Node<T> parent,
