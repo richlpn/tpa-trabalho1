@@ -53,10 +53,10 @@ public class BinaryTree<T> {
         int count = 0, resultComp;
 
         /*Percorre toda a arvore de forma iterativa
-        * Caso o valor seja encontrado printa o numero de iterações e retorna o elemento
-        * Caso o valor no NÓ atual seja < value: Percorrer a subarvore a esquerda
-        * Caso contrário percorrer a direta
-        * */
+         * Caso o valor seja encontrado printa o numero de iterações e retorna o elemento
+         * Caso o valor no NÓ atual seja < value: Percorrer a subarvore a esquerda
+         * Caso contrário percorrer a direta
+         * */
         while (current != null) {
             resultComp = comp.compare(current.getValue(), value);
             count++;
@@ -89,13 +89,13 @@ public class BinaryTree<T> {
     }
 
     private Node<T> removeMaximum(Node<T> root, Node<T> parent) {
-        if (root.getRightNode() != null)
-            return removeMaximum(root.getRightNode(), root);
 
-        else if (root.getLeftNode() != null)
-            parent.setRightNode(root.getLeftNode());
-        else
-            parent.setLeftNode(null);
+        if (root.getRightNode() != null) return removeMaximum(root.getRightNode(), root);
+
+        else if (root.getLeftNode() != null) parent.setRightNode(root.getLeftNode());
+
+        else parent.setLeftNode(null);
+
         root.setLeftNode(null);
         return root;
     }
@@ -126,7 +126,7 @@ public class BinaryTree<T> {
             // Possui apenas um filho
             else if (nChildren == 1) return removeOneChildren(root, parent, rootIsLeftChild);
 
-                //é uma arvore completa
+            //é uma arvore completa
             else return removeTwoChildren(root, parent, rootIsLeftChild);
         }
         // Valor está a esquerda da sub arvore

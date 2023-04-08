@@ -116,28 +116,35 @@ public class CommandLineInterface {
         try {
             int opt = scn.nextInt();
             if (opt == 1) {
+
                 System.out.print("Digite a matricula do aluno a ser excluido\n"
                         + "(Apenas numeros): ");
+
                 int id = scn.nextInt();
                 Aluno deleting = new Aluno(id);
                 Aluno deleted = byId.remove(deleting);
+
                 if (deleted != null) {
                     byName.remove(deleted);
                     System.out.println(deleted);
-                } else
-                    System.out.println("Aluno com matricula " + id + " nao encontrado.");
-            } else if (opt == 2) {
+                }
+                else System.out.println("Aluno com matricula " + id + " nao encontrado.");
+            }
+            else if (opt == 2) {
+
                 String name = scn.next();
                 Aluno deleting = new Aluno(name);
                 Aluno deleted = byName.remove(deleting);
+
                 if (deleted != null) {
                     byId.remove(deleted);
                     System.out.println(deleted);
-                } else
+                }
+                else
                     System.out.println("Aluno com nome " + name + " nao encontrado.");
             }
         } catch (InputMismatchException e) {
-            System.out.println("faz direito ai porra");
+            System.out.println("Valor invalido! Tente Novamente!");
         }
     }
 
