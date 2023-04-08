@@ -180,25 +180,18 @@ public class BinaryTree<T> {
     public int height() {
         if (root == null)
             return -1;
-        return height(root, 0);
+        return height(root);
     }
 
-    private int height(Node<T> node, int heightAccumulator) {
-        int heightLeft = -1, heightRight = -1;
-
-        if (node.getLeftNode() != null) {
-            heightLeft = height(node.getLeftNode(), heightAccumulator + 1);
+    public int height(Node<T> root) {
+        if (root == null) {
+            return -1;
         }
 
-        if (node.getRightNode() != null) {
-            heightLeft = height(node.getRightNode(), heightAccumulator + 1);
-        }
+        int leftSubtreeHeight = height(root.getLeftNode());
+        int rightSubtreeHeight = height(root.getRightNode());
 
-        if (heightLeft > heightRight)
-            return heightLeft;
-        else if (heightLeft < heightRight)
-            return heightRight;
-        return heightAccumulator;
+        return Math.max(leftSubtreeHeight, rightSubtreeHeight) + 1;
     }
 
     public void printPreOrder() {
