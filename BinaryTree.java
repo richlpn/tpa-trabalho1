@@ -115,32 +115,28 @@ public class BinaryTree<T> {
 
     private Node<T> remove(T value, Node<T> root, Node<T> parent,
                            boolean rootIsLeftChild) {
-
+        // Valor é está a direita da sub arvore
         if (comp.compare(root.getValue(), value) < 0) {
             return remove(value, root.getRightNode(), root, false);
         }
         // Valor foi encontrado
         else if (comp.compare(root.getValue(), value) == 0) {
             int nChildren = root.numChildren();
-
             // É folha
+
             if (nChildren == 0) {
-                if (parent == null) {
-                    this.root = null;
-                } else if (rootIsLeftChild) {
-                    parent.setLeftNode(null);
-                } else {
-                    parent.setRightNode(null);
-                }
+                if (parent == null) this.root = null;
+                else if (rootIsLeftChild) parent.setLeftNode(null);
+                else parent.setRightNode(null);
                 return root;
             }
             // Possui apenas um filho
             else if (nChildren == 1) return removeOneChildren(root, parent, rootIsLeftChild);
             //é uma Sub arvore completa
             else return removeTwoChildren(root, parent, rootIsLeftChild);
-        } else {
-            return remove(value, root.getLeftNode(), root, true);
         }
+        // Valor está a esquerda da sub arvore
+        else return remove(value, root.getLeftNode(), root, true);
 
     }
 
