@@ -63,7 +63,7 @@ public class CommandLineInterface {
                     default -> System.out.println("Opcao nao reconhecida, tente novamente.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("erro na main");
+                System.out.println("Erro ao processar opcao");
                 break;
             }
         }
@@ -101,7 +101,7 @@ public class CommandLineInterface {
                     System.out.println("Aluno com nome " + name + " nao encontrado.");
             }
         } catch (InputMismatchException e) {
-            System.out.println("faz direito ai porra");
+            System.out.println("Erro ao processar opcao de procurar aluno");
         }
     }
 
@@ -161,7 +161,7 @@ public class CommandLineInterface {
             byId.insert(inserting);
             byName.insert(inserting);
         } catch (InputMismatchException e) {
-            System.out.println("faz direito ai porra");
+            System.out.println("Erro ao processar opcao de inserir aluno");
         }
     }
 
@@ -185,14 +185,14 @@ public class CommandLineInterface {
             if (optType == 1)
                 System.out.println("Aluno com maior matricula: " + current.getBiggestNode().getValue());
             else
-                System.out.println("Aluno com maior nome: " + current.getBiggestNode().getValue());
+                System.out.println("Aluno com primeiro nome: " + current.getBiggestNode().getValue());
             if (optType == 1)
                 System.out.println("Aluno com menor matricula: " + current.getSmallestNode().getValue());
             else
-                System.out.println("Aluno com menor nome: " + current.getSmallestNode().getValue());
+                System.out.println("Aluno com ultimo nome: " + current.getSmallestNode().getValue());
 
         } catch (InputMismatchException e) {
-            System.out.println("faz direito ai porra");
+            System.out.println("Erro ao processar opcao de estatistica da arvore");
         }
     }
 
@@ -213,7 +213,7 @@ public class CommandLineInterface {
 
             System.out.println("""
                     Deseja imprimir em qual ordem:
-                    pre ordem
+                    1. pre ordem
                     2. em ordem
                     3. pos ordem
                     4. em nivel
@@ -224,10 +224,10 @@ public class CommandLineInterface {
                 case 1 -> current.printPreOrder();
                 case 2 -> current.printInOrder();
                 case 3 -> current.printPostOrder();
-                case 4 -> byId.printLevelOrder();
+                case 4 -> current.printLevelOrder();
             }
         } catch (InputMismatchException e) {
-            System.out.println("faz direito ai porra");
+            System.out.println("Erro ao processar opcao de imprimir arvore");
         }
     }
 }
