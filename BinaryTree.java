@@ -33,14 +33,14 @@ public class BinaryTree<T> {
         if (comp.compare(node.getValue(), value) > 0) {
 
             if (node.getRightNode() == null)
-                node.setRightNode(new Node<T>(value));
+                node.setRightNode(new Node<>(value));
             else
                 insert(node.getRightNode(), value);
 
         } else if (comp.compare(node.getValue(), value) < 0) {
 
             if (node.getLeftNode() == null)
-                node.setLeftNode(new Node<T>(value));
+                node.setLeftNode(new Node<>(value));
             else
                 insert(node.getLeftNode(), value);
 
@@ -58,7 +58,7 @@ public class BinaryTree<T> {
                 System.out.println("Numero de nos percorridos ate encontrar elemento: " + count);
                 return current.getValue();
             }
-            // Caso o valor seja
+            // Caso o valor seja menor
             else if (resultComp < 0) current = current.getLeftNode();
 
             else current = current.getRightNode();
@@ -304,11 +304,15 @@ public class BinaryTree<T> {
     public Node<T> getBiggestNode () {
         if (root == null)
             return null;
+        if(root.getRightNode() == null) return root;
         return getBiggestNode(root.getRightNode());
     }
-    private Node<T> getBiggestNode (Node<T> node) {
-        if (node.getRightNode() == null)
-            return node;
-        return getBiggestNode(node.getRightNode());
+    private Node<T> getBiggestNode (Node<T> root) {
+
+        Node<T> node = root.getRightNode();
+        while(node.getRightNode() != null){
+            node = node.getRightNode();
+        }
+        return node;
     }
 }

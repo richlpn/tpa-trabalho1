@@ -23,8 +23,10 @@ public class Main {
         }
 
         nomeArquivo += TAM + ".txt";
-        AlunoComparators.CompareByName compareByName = new AlunoComparators.CompareByName();
-        AlunoComparators.CompareByID compareByID = new AlunoComparators.CompareByID();
+
+        Aluno.CompareByName compareByName = new Aluno.CompareByName();
+        Aluno.CompareByID compareByID = new Aluno.CompareByID();
+
         BinaryTree<Aluno> arvoreNome = new BinaryTree<>(compareByName);
         BinaryTree<Aluno> arvoreMatricula = new BinaryTree<>(compareByID);
 
