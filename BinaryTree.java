@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -26,14 +30,14 @@ public class BinaryTree<T> {
 
         Se o valor já existe na árvore, o método imprime uma mensagem de erro e não insere o valor novamente.
         */
-        if (comp.compare(node.getValue(), value) < 0) {
+        if (comp.compare(node.getValue(), value) > 0) {
 
             if (node.getRightNode() == null)
                 node.setRightNode(new Node<T>(value));
             else
                 insert(node.getRightNode(), value);
 
-        } else if (comp.compare(node.getValue(), value) > 0) {
+        } else if (comp.compare(node.getValue(), value) < 0) {
 
             if (node.getLeftNode() == null)
                 node.setLeftNode(new Node<T>(value));
@@ -46,16 +50,18 @@ public class BinaryTree<T> {
 
     public T search (T value) {
         Node<T> current = root;
-        int count = 0;
+        int count = 0, resultComp = 0;
         while (current != null) {
             ++count;
-            if (comp.compare(current.getValue(), value) == 0) {
+            resultComp = comp.compare(current.getValue(), value);
+            if ( resultComp == 0) {
                 System.out.println("Numero de nos percorridos ate encontrar elemento: " + count);
                 return current.getValue();
-            } else if (comp.compare(current.getValue(), value) < 0)
-                current = current.getRightNode();
-            else
-                current = current.getLeftNode();
+            }
+            // Caso o valor seja
+            else if (resultComp < 0) current = current.getLeftNode();
+
+            else current = current.getRightNode();
         }
         return null;
     }
@@ -115,15 +121,17 @@ public class BinaryTree<T> {
 
     private Node<T> remove(T value, Node<T> root, Node<T> parent,
                            boolean rootIsLeftChild) {
+
+        int resultComp = comp.compare(root.getValue(), value);
         // Valor é está a direita da sub arvore
-        if (comp.compare(root.getValue(), value) < 0) {
+        if (resultComp > 0) {
             return remove(value, root.getRightNode(), root, false);
         }
         // Valor foi encontrado
-        else if (comp.compare(root.getValue(), value) == 0) {
+        else if (resultComp == 0) {
             int nChildren = root.numChildren();
-            // É folha
 
+            // É folha
             if (nChildren == 0) {
                 if (parent == null) this.root = null;
                 else if (rootIsLeftChild) parent.setLeftNode(null);
@@ -132,7 +140,8 @@ public class BinaryTree<T> {
             }
             // Possui apenas um filho
             else if (nChildren == 1) return removeOneChildren(root, parent, rootIsLeftChild);
-            //é uma Sub arvore completa
+
+            //é uma arvore completa
             else return removeTwoChildren(root, parent, rootIsLeftChild);
         }
         // Valor está a esquerda da sub arvore
@@ -141,41 +150,30 @@ public class BinaryTree<T> {
     }
 
     private Node<T> removeTwoChildren(Node<T> node, Node<T> parent, boolean rootIsLeftChild){
-/*
-        removeMinimum é usada para encontrar o nó mínimo na subárvore esquerda do nó a ser removido.
-        O nó mínimo encontrado é então definido como a nova raiz da subárvore e
-        os filhos esquerdo e direito do nó a ser removido são adicionados como filhos da nova raiz.
-*/
+        /*
+        * removeMinimum é usada para encontrar o nó mínimo na subárvore esquerda do nó a ser removido.
+        * O nó mínimo encontrado é então definido como a nova raiz da subárvore e
+        * os filhos esquerdo e direito do nó a ser removido são adicionados como filhos da nova raiz.
+        */
         Node<T> newRoot = removeMinimum(root.getLeftNode(), root);
         newRoot.setLeftNode(root.getLeftNode());
         newRoot.setRightNode(root.getRightNode());
-        if (parent == null) {
-            this.root = newRoot;
-        } else if (rootIsLeftChild)
-            parent.setLeftNode(newRoot);
-        else
-            parent.setRightNode(newRoot);
+
+        if (parent == null) this.root = newRoot;
+        else if (rootIsLeftChild) parent.setLeftNode(newRoot);
+        else parent.setRightNode(newRoot);
+
         return root;
     }
     private Node<T> removeOneChildren(Node<T> node, Node<T> parent, boolean rootIsLeftChild){
-        if (root.getLeftNode() != null) {
-            if (parent == null) {
-                this.root = root.getLeftNode();
-            } else if (rootIsLeftChild) {
-                parent.setLeftNode(root.getLeftNode());
-            } else {
-                parent.setRightNode(root.getLeftNode());
-            }
-        }
-        else {
-            if (parent == null) {
-                this.root = root.getRightNode();
-            } else if (rootIsLeftChild) {
-                parent.setLeftNode(root.getRightNode());
-            } else {
-                parent.setRightNode(root.getRightNode());
-            }
-        }
+        Node<T> child = node.getLeftNode() != null ? node.getLeftNode() : node.getRightNode();
+        /*
+        * identifica se o filho é o filho esquerdo ou o filho direito do nó a ser removido e atribui este filho ao pai do nó a ser removido.
+        * Em seguida, o nó a ser removido é desconectado da árvore e retornado pelo método.
+        * */
+        if (parent == null) this.root = child;
+        else if (rootIsLeftChild) parent.setLeftNode(child);
+        else parent.setRightNode(child);
         return root;
     }
     public int size() {
@@ -228,14 +226,32 @@ public class BinaryTree<T> {
         }
     }
 
+    public void writeInOrder(String filename){
+        try {
+            FileWriter fileWriter = new FileWriter(filename);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            writeInOrder(this.root, bufferedWriter);
+            bufferedWriter.close();
+        } catch (IOException ex) {
+            System.err.println("Erro ao escrever no arquivo.");
+        }
+    }
+
+    private void writeInOrder(Node<T> node, BufferedWriter writer) throws IOException{
+        if (node != null) {
+            writeInOrder(node.getRightNode(), writer);
+            writer.write(node.getValue().toString() + "\n");
+            writeInOrder(node.getLeftNode(), writer);
+        }
+    }
     public void printInOrder () {
         printInOrder(root);
     }
     private void printInOrder (Node<T> node) {
         if (node != null) {
-            printInOrder(node.getLeftNode());
-            System.out.println(node.getValue());
             printInOrder(node.getRightNode());
+            System.out.println(node.getValue());
+            printInOrder(node.getLeftNode());
         }
     }
 

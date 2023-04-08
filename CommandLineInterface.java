@@ -33,6 +33,7 @@ public class CommandLineInterface {
                 opt = scn.nextInt();
                 switch (opt) {
                     case -1:
+                        byId.writeInOrder("saida.txt");
                         break;
                     case 1:
                         System.out.println();

@@ -4,12 +4,12 @@ package Aluno;
 public class Aluno {
     private Integer id;
     private String name;
-    private Integer age;
+    private Integer nota;
 
-    public Aluno(Integer id, String name, Integer age) {
+    public Aluno(Integer id, String name, Integer nota) {
         this.id = id;
         this.name = name;
-        this.age = age;
+        this.nota = nota;
     }
 
     public Aluno(String name) {
@@ -36,21 +36,17 @@ public class Aluno {
         this.name = name;
     }
 
-    public Integer getAge() {
-        return age;
+    public Integer getNota() {
+        return nota;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setNota(Integer nota) {
+        this.nota = nota;
     }
 
     @Override
     public String toString() {
-        return "Aluno{" +
-                "id=" + id + ";" +
-                "name=" + name + ";" +
-                "age=" + age + ";" +
-                '}';
+        return id + ";" +name + ";" + nota + ";";
     }
 }
 
