@@ -8,9 +8,9 @@ import java.io.IOException;
 
 public class Main {
     /* CONFIGURAÇÕES DE GERAÇÃO DE ARQUIVOS
-    * TAM == QUANTIDADE DE ALUNOS GERADOS
-    * tipoArquivo == Os ID dos alunos serão crescente(Ordenados) ou não
-    * */
+     * TAM == QUANTIDADE DE ALUNOS GERADOS
+     * tipoArquivo == Os ID dos alunos serão crescente(Ordenados) ou não
+     * */
     private static final int TAM = 5000;
     private static final TipoArquivo tipoArquivo = TipoArquivo.BALANCEADO;
 
@@ -19,12 +19,11 @@ public class Main {
         GeradorArquivos geradorArquivos = new GeradorArquivos();
         String nomeArquivo = "entrada";
 
-        if(tipoArquivo == TipoArquivo.ORDENADO) {
-            nomeArquivo+="Ordenada";
+        if (tipoArquivo == TipoArquivo.ORDENADO) {
+            nomeArquivo += "Ordenada";
             geradorArquivos.geraArqOrdenado(TAM);
-        }
-        else{
-            nomeArquivo+="Balanceada";
+        } else {
+            nomeArquivo += "Balanceada";
             geradorArquivos.geraArqBalanceado(TAM);
         }
 
@@ -36,42 +35,35 @@ public class Main {
         BinaryTree<Aluno> arvoreNome = new BinaryTree<>(compareByName);
         BinaryTree<Aluno> arvoreMatricula = new BinaryTree<>(compareByID);
 
-        System.out.println("Lendo arquivo de entrada.");
-        String[][] alunos = readFile(nomeArquivo);
-        System.out.println("Arquivo de entrada lido.");
-        Aluno aluno;
+        System.out.println("Carregando dados de " + nomeArquivo);
 
-        System.out.println("Gravando dados de alunos.");
-        for(String[] dados : alunos){
-            aluno = new Aluno(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]));
-            arvoreMatricula.insert(aluno);
-            arvoreNome.insert(aluno);
-        }
-        System.out.println("Dados de alunos gravados.");
-        System.out.println("Tamanho da arvore por nome: " + arvoreNome.size());
-        System.out.println("Tamanho da arvore por matricula: " + arvoreMatricula.size() + "\n");
+        readFile(nomeArquivo, arvoreMatricula, arvoreNome);
+
+        System.out.println(
+                "Carregamento concluido!"
+                        + "Tamanho da arvore por nome: " + arvoreNome.size()
+                        + "Tamanho da arvore por matricula: " + arvoreMatricula.size());
 
 
-        CommandLineInterface cli = new CommandLineInterface(arvoreMatricula,
-                                                            arvoreNome);
+        CommandLineInterface cli = new CommandLineInterface(arvoreMatricula, arvoreNome);
         cli.mainloop();
     }
 
-    private static String[][] readFile(String fileName) {
-        String[][] alunos = new String[0][];
+    private static void readFile(String fileName, BinaryTree<Aluno> t1, BinaryTree<Aluno> t2) {
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             int numLines = Integer.parseInt(br.readLine());
-
-            alunos = new String[numLines][3];
-
+            String[] dados;
+            Aluno aluno;
             for (int i = 0; i < numLines; i++) {
-                alunos[i] = br.readLine().split(";");
+                dados = br.readLine().split(";");
+                aluno = new Aluno(Integer.parseInt(dados[0]), dados[1], Integer.parseInt(dados[2]));
+                t1.insert(aluno);
+                t2.insert(aluno);
             }
 
         } catch (IOException err) {
             System.err.println("Erro ao ler arquivo: " + err);
         }
-        return alunos;
     }
 }

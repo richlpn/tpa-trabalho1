@@ -1,6 +1,6 @@
 import java.util.Comparator;
 
-public class Node <T> {
+public class Node<T> {
     private T value;
     private Node<T> leftNode;
     private Node<T> rightNode;
@@ -16,7 +16,8 @@ public class Node <T> {
         this.leftNode = null;
         this.rightNode = null;
     }
-// ######## GET & SETTERS
+
+    // ######## GET & SETTERS
     public T getValue() {
         return value;
     }
@@ -41,7 +42,7 @@ public class Node <T> {
         this.rightNode = rightNode;
     }
 
-    public int numChildren () {
+    public int numChildren() {
         int res = 0;
         if (this.getLeftNode() != null)
             ++res;

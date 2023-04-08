@@ -8,8 +8,8 @@ public class CommandLineInterface {
     private Scanner scn;
 
 
-    public CommandLineInterface (BinaryTree<Aluno> byId,
-                                 BinaryTree<Aluno> byName) {
+    public CommandLineInterface(BinaryTree<Aluno> byId,
+                                BinaryTree<Aluno> byName) {
         this.byId = byId;
         this.byName = byName;
     }
@@ -71,7 +71,7 @@ public class CommandLineInterface {
         scn.close();
     }
 
-    private void search () {
+    private void search() {
         System.out.print("""
                 Selecione a opcao:
                 1. Buscar por matricula
@@ -106,7 +106,7 @@ public class CommandLineInterface {
         }
     }
 
-    private void delete () {
+    private void delete() {
         System.out.print("""
                 Selecione a opcao:
                 1. Excluir por matricula
@@ -117,15 +117,14 @@ public class CommandLineInterface {
             int opt = scn.nextInt();
             if (opt == 1) {
                 System.out.print("Digite a matricula do aluno a ser excluido\n"
-                                +"(Apenas numeros): ");
+                        + "(Apenas numeros): ");
                 int id = scn.nextInt();
                 Aluno deleting = new Aluno(id);
                 Aluno deleted = byId.remove(deleting);
                 if (deleted != null) {
                     byName.remove(deleted);
                     System.out.println(deleted);
-                }
-                else
+                } else
                     System.out.println("Aluno com matricula " + id + " nao encontrado.");
             } else if (opt == 2) {
                 String name = scn.next();
@@ -134,15 +133,15 @@ public class CommandLineInterface {
                 if (deleted != null) {
                     byId.remove(deleted);
                     System.out.println(deleted);
-                }
-                else
+                } else
                     System.out.println("Aluno com nome " + name + " nao encontrado.");
             }
         } catch (InputMismatchException e) {
             System.out.println("faz direito ai porra");
         }
     }
-    private void insert () {
+
+    private void insert() {
         Aluno inserting;
         try {
             System.out.println("Digite a matricula do aluno: ");
@@ -160,7 +159,7 @@ public class CommandLineInterface {
         }
     }
 
-    private void treeStatistics () {
+    private void treeStatistics() {
         BinaryTree<Aluno> current;
         System.out.print("""
                 Selecione a opcao:
@@ -191,7 +190,7 @@ public class CommandLineInterface {
         }
     }
 
-    private void printTree () {
+    private void printTree() {
         BinaryTree<Aluno> current;
         System.out.print("""
                 Selecione a opcao:

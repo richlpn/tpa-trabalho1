@@ -1,5 +1,4 @@
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,8 +15,8 @@ public class BinaryTree<T> {
 
     public void insert(T value) {
         if (root == null)
-            this.root = new Node<T>(value);
-        else insert(this.root, new Node<T>(value));
+            this.root = new Node<>(value);
+        else insert(this.root, new Node<>(value));
     }
 
     private void insert(Node<T> node, Node<T> newNode) {
@@ -38,8 +37,7 @@ public class BinaryTree<T> {
             else
                 insert(node.getRightNode(), newNode);
 
-        }
-        else if (resultComp < 0) {
+        } else if (resultComp < 0) {
 
             if (node.getLeftNode() == null)
                 node.setLeftNode(newNode);
@@ -50,48 +48,33 @@ public class BinaryTree<T> {
             System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
     }
 
-    public T search (T value) {
+    public T search(T value) {
         Node<T> current = root;
-        int count = 0, resultComp = 0;
+        int count = 0, resultComp;
+
+        /*Percorre toda a arvore de forma iterativa
+        * Caso o valor seja encontrado printa o numero de iterações e retorna o elemento
+        * Caso o valor no NÓ atual seja < value: Percorrer a subarvore a esquerda
+        * Caso contrário percorrer a direta
+        * */
         while (current != null) {
-            ++count;
             resultComp = comp.compare(current.getValue(), value);
-            if ( resultComp == 0) {
+            count++;
+
+            // Valor encontrado
+            if (resultComp == 0) {
                 System.out.println("Numero de nos percorridos ate encontrar elemento: " + count);
                 return current.getValue();
             }
-            // Caso o valor seja menor
+            // Valor é menor que o atual. ir para esquerda
             else if (resultComp < 0) current = current.getLeftNode();
 
+                // Valor é maior. ir para direita
             else current = current.getRightNode();
+
         }
         return null;
     }
-
-    // public T search(T value) {
-    //     if (comp.compare(this.root.getValue(), value) == 0){
-    //         return root.getValue();
-    //     }
-
-    //     return search(root, value);
-    // }
-
-    // private T search(Node<T> node, T value) {
-    //     if (node == null)
-    //         return null;
-    //     int res = comp.compare(node.getValue(), value);
-
-    //     // Se o no atual for menor que o valor a ser achado, procurar nos a
-    //     // esquerda
-    //     if (res < 0) return search(node.getLeftNode(), value);
-
-    //         //Se o valor foi encontrado
-    //     else if (res == 0) return node.getValue();
-
-    //         // Se o no atual for maior que o valor a ser achado, procurar nos
-    //         // a direta
-    //     else return search(root.getRightNode(), value);
-    //}
 
     private Node<T> removeMinimum(Node<T> root, Node<T> parent) {
         if (root.getLeftNode() != null)
@@ -125,7 +108,7 @@ public class BinaryTree<T> {
                            boolean rootIsLeftChild) {
 
         int resultComp = comp.compare(root.getValue(), value);
-        // Valor é está a direita da sub arvore
+        // Valor está a direita da sub arvore
         if (resultComp > 0) {
             return remove(value, root.getRightNode(), root, false);
         }
@@ -143,7 +126,7 @@ public class BinaryTree<T> {
             // Possui apenas um filho
             else if (nChildren == 1) return removeOneChildren(root, parent, rootIsLeftChild);
 
-            //é uma arvore completa
+                //é uma arvore completa
             else return removeTwoChildren(root, parent, rootIsLeftChild);
         }
         // Valor está a esquerda da sub arvore
@@ -151,12 +134,12 @@ public class BinaryTree<T> {
 
     }
 
-    private Node<T> removeTwoChildren(Node<T> node, Node<T> parent, boolean rootIsLeftChild){
+    private Node<T> removeTwoChildren(Node<T> root, Node<T> parent, boolean rootIsLeftChild) {
         /*
-        * removeMinimum é usada para encontrar o nó mínimo na subárvore esquerda do nó a ser removido.
-        * O nó mínimo encontrado é então definido como a nova raiz da subárvore e
-        * os filhos esquerdo e direito do nó a ser removido são adicionados como filhos da nova raiz.
-        */
+         * removeMinimum é usada para encontrar o nó mínimo na subárvore esquerda do nó a ser removido.
+         * O nó mínimo encontrado é então definido como a nova raiz da subárvore e
+         * os filhos esquerdo e direito do nó a ser removido são adicionados como filhos da nova raiz.
+         */
         Node<T> newRoot = removeMinimum(root.getLeftNode(), root);
         newRoot.setLeftNode(root.getLeftNode());
         newRoot.setRightNode(root.getRightNode());
@@ -167,20 +150,22 @@ public class BinaryTree<T> {
 
         return root;
     }
-    private Node<T> removeOneChildren(Node<T> node, Node<T> parent, boolean rootIsLeftChild){
+
+    private Node<T> removeOneChildren(Node<T> node, Node<T> parent, boolean rootIsLeftChild) {
         Node<T> child = node.getLeftNode() != null ? node.getLeftNode() : node.getRightNode();
         /*
-        * identifica se o filho é o filho esquerdo ou o filho direito do nó a ser removido e atribui este filho ao pai do nó a ser removido.
-        * Em seguida, o nó a ser removido é desconectado da árvore e retornado pelo método.
-        * */
+         * identifica se o filho é o filho esquerdo ou o filho direito do nó a ser removido e atribui este filho ao pai do nó a ser removido.
+         * Em seguida, o nó a ser removido é desconectado da árvore e retornado pelo método.
+         * */
         if (parent == null) this.root = child;
         else if (rootIsLeftChild) parent.setLeftNode(child);
         else parent.setRightNode(child);
         return root;
     }
+
     public int size() {
         if (root == null) return 0;
-        
+
         return size(root);
     }
 
@@ -192,12 +177,13 @@ public class BinaryTree<T> {
     }
 
 
-    public int height () {
+    public int height() {
         if (root == null)
             return -1;
         return height(root, 0);
     }
-    private int height (Node<T> node, int heightAccumulator) {
+
+    private int height(Node<T> node, int heightAccumulator) {
         int heightLeft = -1, heightRight = -1;
 
         if (node.getLeftNode() != null) {
@@ -215,9 +201,10 @@ public class BinaryTree<T> {
         return heightAccumulator;
     }
 
-    public void printPreOrder () {
+    public void printPreOrder() {
         printPreOrder(root);
     }
+
     private void printPreOrder(Node<T> node) {
         if (node != null) {
             System.out.println(node.getValue());
@@ -226,7 +213,7 @@ public class BinaryTree<T> {
         }
     }
 
-    public void writeInOrder(String filename){
+    public void writeInOrder(String filename) {
         try {
             FileWriter fileWriter = new FileWriter(filename);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -237,17 +224,19 @@ public class BinaryTree<T> {
         }
     }
 
-    private void writeInOrder(Node<T> node, BufferedWriter writer) throws IOException{
+    private void writeInOrder(Node<T> node, BufferedWriter writer) throws IOException {
         if (node != null) {
             writeInOrder(node.getRightNode(), writer);
             writer.write(node.getValue().toString() + "\n");
             writeInOrder(node.getLeftNode(), writer);
         }
     }
-    public void printInOrder () {
+
+    public void printInOrder() {
         printInOrder(root);
     }
-    private void printInOrder (Node<T> node) {
+
+    private void printInOrder(Node<T> node) {
         if (node != null) {
             printInOrder(node.getRightNode());
             System.out.println(node.getValue());
@@ -255,10 +244,11 @@ public class BinaryTree<T> {
         }
     }
 
-    public void printPostOrder () {
+    public void printPostOrder() {
         printPostOrder(root);
     }
-    private void printPostOrder (Node<T> node) {
+
+    private void printPostOrder(Node<T> node) {
         if (node != null) {
             printPostOrder(node.getLeftNode());
             printPostOrder(node.getRightNode());
@@ -266,13 +256,13 @@ public class BinaryTree<T> {
         }
     }
 
-    public void printLevelOrder () {
+    public void printLevelOrder() {
         if (root == null)
             return;
 
         ArrayList<Node<T>>[] levels = new ArrayList[height() + 1];
         for (int i = 0; i < height() + 1; ++i) {
-            levels[i] = new ArrayList<Node<T>>();
+            levels[i] = new ArrayList<>();
         }
 
         printLeverOrder(root, 0, levels);
@@ -281,7 +271,8 @@ public class BinaryTree<T> {
             for (Node<T> node : level)
                 System.out.println(node.getValue());
     }
-    private void printLeverOrder (Node<T> node, int level, ArrayList<Node<T>>[] levels) {
+
+    private void printLeverOrder(Node<T> node, int level, ArrayList<Node<T>>[] levels) {
         if (node == null)
             return;
         levels[level].add(node);
@@ -289,24 +280,26 @@ public class BinaryTree<T> {
         printLeverOrder(node.getRightNode(), level + 1, levels);
     }
 
-    public Node<T> getSmallestNode () {
+    public Node<T> getSmallestNode() {
         if (root == null) return null;
         else if (root.getLeftNode() == null) return root;
         return getSmallestNode(root.getLeftNode());
     }
-    private Node<T> getSmallestNode (Node<T> node) {
+
+    private Node<T> getSmallestNode(Node<T> node) {
         if (node.getLeftNode() == null) return node;
         return getSmallestNode(node.getLeftNode());
     }
 
-    public Node<T> getBiggestNode () {
+    public Node<T> getBiggestNode() {
         if (root == null) return null;
         else if (root.getRightNode() == null) return root;
         return getBiggestNode(root.getRightNode());
     }
-    private Node<T> getBiggestNode (Node<T> root) {
 
-        if(root.getRightNode() == null) return root;
+    private Node<T> getBiggestNode(Node<T> root) {
+
+        if (root.getRightNode() == null) return root;
         return getBiggestNode(root.getRightNode());
     }
 }

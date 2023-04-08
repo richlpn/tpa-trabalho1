@@ -48,24 +48,24 @@ public class Aluno {
 
     @Override
     public String toString() {
-        return id + ";" +name + ";" + nota + ";";
+        return id + ";" + name + ";" + nota + ";";
     }
 
-        public static class CompareByID implements Comparator<Aluno> {
+    public static class CompareByID implements Comparator<Aluno> {
 
-            @Override
-            public int compare(Aluno a1, Aluno a2) {
-                return a1.getId().compareTo(a2.getId());
-            }
-
+        @Override
+        public int compare(Aluno a1, Aluno a2) {
+            return a1.getId().compareTo(a2.getId());
         }
 
-        public static class CompareByName implements Comparator<Aluno> {
+    }
 
-            @Override
-            public int compare(Aluno a1, Aluno a2) {
-                return a1.getName().compareTo(a2.getName());
-            }
+    public static class CompareByName implements Comparator<Aluno> {
+
+        @Override
+        public int compare(Aluno a1, Aluno a2) {
+            return a1.getName().compareTo(a2.getName());
         }
+    }
 }
 
