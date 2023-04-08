@@ -7,7 +7,7 @@ import java.util.Comparator;
 public class BinaryTree<T> {
     /* Autores:
      * Lucas Vieira da Silva
-     * Richard Lucas Pereria Nunes
+     * Richard Lucas Pereira Nunes
      * */
     private final Comparator<T> comp;
     private Node<T> root;
