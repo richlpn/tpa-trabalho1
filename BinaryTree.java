@@ -17,6 +17,15 @@ public class BinaryTree<T> {
     }
 
     private void insert(Node<T> node, T value) {
+        /*
+        Se "value" é menor que o valor do nó, ele verifica se o nó à esquerda é nulo.
+        Se for,ele cria um novo nó com o valor e define-o como filho esquerdo do nó atual.
+        Se não, ele chama recursivamente o método insert() com o nó à esquerda e o valor.
+
+        Se o valor é maior que o valor do nó, ele segue um processo semelhante com a subárvore direita.
+
+        Se o valor já existe na árvore, o método imprime uma mensagem de erro e não insere o valor novamente.
+        */
         if (comp.compare(node.getValue(), value) < 0) {
 
             if (node.getRightNode() == null)
@@ -106,10 +115,15 @@ public class BinaryTree<T> {
 
     private Node<T> remove(T value, Node<T> root, Node<T> parent,
                            boolean rootIsLeftChild) {
+
         if (comp.compare(root.getValue(), value) < 0) {
             return remove(value, root.getRightNode(), root, false);
-        } else if (comp.compare(root.getValue(), value) == 0) {
+        }
+        // Valor foi encontrado
+        else if (comp.compare(root.getValue(), value) == 0) {
             int nChildren = root.numChildren();
+
+            // É folha
             if (nChildren == 0) {
                 if (parent == null) {
                     this.root = null;
@@ -119,43 +133,55 @@ public class BinaryTree<T> {
                     parent.setRightNode(null);
                 }
                 return root;
-            } else if (nChildren == 1) {
-                if (root.getLeftNode() != null) {
-                    if (parent == null) {
-                        this.root = root.getLeftNode();
-                    } else if (rootIsLeftChild) {
-                        parent.setLeftNode(root.getLeftNode());
-                    } else {
-                        parent.setRightNode(root.getLeftNode());
-                    }
-                } else {
-                    if (parent == null) {
-                        this.root = root.getRightNode();
-                    } else if (rootIsLeftChild) {
-                        parent.setLeftNode(root.getRightNode());
-                    } else {
-                        parent.setRightNode(root.getRightNode());
-                    }
-                }
-                return root;
-            } else {
-                Node<T> newRoot = removeMinimum(root.getLeftNode(), root);
-                newRoot.setLeftNode(root.getLeftNode());
-                newRoot.setRightNode(root.getRightNode());
-                if (parent == null) {
-                    this.root = newRoot;
-                } else if (rootIsLeftChild)
-                    parent.setLeftNode(newRoot);
-                else
-                    parent.setRightNode(newRoot);
-                return root;
             }
+            // Possui apenas um filho
+            else if (nChildren == 1) return removeOneChildren(root, parent, rootIsLeftChild);
+            //é uma Sub arvore completa
+            else return removeTwoChildren(root, parent, rootIsLeftChild);
         } else {
             return remove(value, root.getLeftNode(), root, true);
         }
 
     }
 
+    private Node<T> removeTwoChildren(Node<T> node, Node<T> parent, boolean rootIsLeftChild){
+/*
+        removeMinimum é usada para encontrar o nó mínimo na subárvore esquerda do nó a ser removido.
+        O nó mínimo encontrado é então definido como a nova raiz da subárvore e
+        os filhos esquerdo e direito do nó a ser removido são adicionados como filhos da nova raiz.
+*/
+        Node<T> newRoot = removeMinimum(root.getLeftNode(), root);
+        newRoot.setLeftNode(root.getLeftNode());
+        newRoot.setRightNode(root.getRightNode());
+        if (parent == null) {
+            this.root = newRoot;
+        } else if (rootIsLeftChild)
+            parent.setLeftNode(newRoot);
+        else
+            parent.setRightNode(newRoot);
+        return root;
+    }
+    private Node<T> removeOneChildren(Node<T> node, Node<T> parent, boolean rootIsLeftChild){
+        if (root.getLeftNode() != null) {
+            if (parent == null) {
+                this.root = root.getLeftNode();
+            } else if (rootIsLeftChild) {
+                parent.setLeftNode(root.getLeftNode());
+            } else {
+                parent.setRightNode(root.getLeftNode());
+            }
+        }
+        else {
+            if (parent == null) {
+                this.root = root.getRightNode();
+            } else if (rootIsLeftChild) {
+                parent.setLeftNode(root.getRightNode());
+            } else {
+                parent.setRightNode(root.getRightNode());
+            }
+        }
+        return root;
+    }
     public int size() {
         if (root == null) return 0;
         
