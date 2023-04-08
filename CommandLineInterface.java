@@ -30,8 +30,7 @@ public class CommandLineInterface {
                     4. Exibir estatisticas da arvore
                     9. Printar arvore
                     -1. Sair
-                    ->\s
-                    """);
+                    ->\s""");
             try {
                 opt = scn.nextInt();
                 switch (opt) {

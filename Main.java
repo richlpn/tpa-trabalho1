@@ -40,9 +40,9 @@ public class Main {
         readFile(nomeArquivo, arvoreMatricula, arvoreNome);
 
         System.out.println(
-                "Carregamento concluido!"
+                "Carregamento concluido!\n"
                         + "Tamanho da arvore por nome: " + arvoreNome.size()
-                        + "Tamanho da arvore por matricula: " + arvoreMatricula.size());
+                        + "\nTamanho da arvore por matricula: " + arvoreMatricula.size());
 
 
         CommandLineInterface cli = new CommandLineInterface(arvoreMatricula, arvoreNome);
