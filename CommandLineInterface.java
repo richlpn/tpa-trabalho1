@@ -4,7 +4,7 @@ import java.util.Scanner;
 import Aluno.Aluno;
 
 public class CommandLineInterface {
-    private BinaryTree<Aluno> byId, byName;
+    private final BinaryTree<Aluno> byId, byName;
     private Scanner scn;
 
 
@@ -14,7 +14,7 @@ public class CommandLineInterface {
         this.byName = byName;
     }
 
-    public void main () {
+    public void mainloop() {
         System.out.println();
 
         scn = new Scanner(System.in);
@@ -22,46 +22,46 @@ public class CommandLineInterface {
         int opt = 10;
 
         while (opt != -1) {
-            System.out.println("O que deseja fazer?");
-            System.out.printf("1. Buscar aluno\n"
-                             +"2. Excluir aluno\n"
-                             +"3. Incluir aluno\n"
-                             +"4. Exibir estatisticas da arvore\n"
-                             +"9. Printar arvore\n"
-                             +"-1. Sair\n");
+            System.out.print("""
+                    "O que deseja fazer?"
+                    1. Buscar aluno
+                    2. Excluir aluno
+                    3. Incluir aluno
+                    4. Exibir estatisticas da arvore
+                    9. Printar arvore
+                    -1. Sair
+                    ->\s
+                    """);
             try {
                 opt = scn.nextInt();
                 switch (opt) {
-                    case -1:
-                        byId.writeInOrder("saida.txt");
-                        break;
-                    case 1:
+                    case -1 -> byId.writeInOrder("saida.txt");
+                    case 1 -> {
                         System.out.println();
                         search();
                         System.out.println();
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         System.out.println();
                         delete();
                         System.out.println();
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         System.out.println();
                         insert();
                         System.out.println();
-                        break;
-                    case 4:
+                    }
+                    case 4 -> {
                         System.out.println();
                         treeStatistics();
                         System.out.println();
-                        break;
-                    case 9:
+                    }
+                    case 9 -> {
                         System.out.println();
                         printTree();
                         System.out.println();
-                        break;
-                    default:
-                        System.out.println("Opcao nao reconhecida, tente novamente.");
+                    }
+                    default -> System.out.println("Opcao nao reconhecida, tente novamente.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("erro na main");
@@ -72,15 +72,19 @@ public class CommandLineInterface {
     }
 
     private void search () {
-        System.out.printf("Selecione a opcao:\n"
-                         +"1. Buscar por matricula\n"
-                         +"2. Buscar por nome\n"
-                         +"Para voltar, digite qualquer outro numero.\n");
+        System.out.print("""
+                Selecione a opcao:
+                1. Buscar por matricula
+                2. Buscar por nome
+                Para voltar, digite qualquer outro numero.
+                """);
         try {
             int opt = scn.nextInt();
             if (opt == 1) {
-                System.out.printf("Digite a matricula do aluno a ser pesquisado\n"
-                                +"(Apenas numeros):\n");
+                System.out.print("""
+                        Digite a matricula do aluno a ser pesquisado
+                        (Apenas numeros): \s
+                        """);
                 int id = scn.nextInt();
                 Aluno searching = new Aluno(id);
                 Aluno found = byId.search(searching);
@@ -103,15 +107,17 @@ public class CommandLineInterface {
     }
 
     private void delete () {
-        System.out.printf("Selecione a opcao:\n"
-                         +"1. Excluir por matricula\n"
-                         +"2. Excluir por nome\n"
-                         +"Para voltar, digite qualquer outro numero.\n");
+        System.out.print("""
+                Selecione a opcao:
+                1. Excluir por matricula
+                2. Excluir por nome
+                Para voltar, digite qualquer outro numero.
+                ->\s""");
         try {
             int opt = scn.nextInt();
             if (opt == 1) {
-                System.out.printf("Digite a matricula do aluno a ser excluido\n"
-                                +"(Apenas numeros):\n");
+                System.out.print("Digite a matricula do aluno a ser excluido\n"
+                                +"(Apenas numeros): ");
                 int id = scn.nextInt();
                 Aluno deleting = new Aluno(id);
                 Aluno deleted = byId.remove(deleting);
@@ -139,11 +145,11 @@ public class CommandLineInterface {
     private void insert () {
         Aluno inserting;
         try {
-            System.out.println("Digite a matricula do aluno:");
+            System.out.println("Digite a matricula do aluno: ");
             int id = scn.nextInt();
-            System.out.println("Digite o nome do aluno:");
+            System.out.println("Digite o nome do aluno: ");
             String name = scn.next();
-            System.out.println("Digite a idade do aluno:");
+            System.out.println("Digite a nota do aluno: ");
             int age = scn.nextInt();
 
             inserting = new Aluno(id, name, age);
@@ -156,10 +162,12 @@ public class CommandLineInterface {
 
     private void treeStatistics () {
         BinaryTree<Aluno> current;
-        System.out.printf("Selecione a opcao:\n"
-                         +"1. Arvore por matricula\n"
-                         +"2. Arvore por nome\n"
-                         +"Para voltar, digite qualquer outro numero.\n");
+        System.out.print("""
+                Selecione a opcao:
+                1. Arvore por matricula
+                2. Arvore por nome
+                Para voltar, digite qualquer outro numero.
+                ->\s""");
         try {
             int optType = scn.nextInt();
             if (optType == 1)
@@ -185,10 +193,12 @@ public class CommandLineInterface {
 
     private void printTree () {
         BinaryTree<Aluno> current;
-        System.out.printf("Selecione a opcao:\n"
-                         +"1. Imprimir arvore por matricula\n"
-                         +"2. Imprimir arvore por nome\n"
-                         +"Para voltar, digite qualquer outro numero.\n");
+        System.out.print("""
+                Selecione a opcao:
+                1. Imprimir arvore por matricula
+                2. Imprimir arvore por nome
+                Para voltar, digite qualquer outro numero.
+                ->\s""");
         try {
             int optType = scn.nextInt();
             if (optType == 1)
@@ -196,25 +206,20 @@ public class CommandLineInterface {
             else
                 current = byName;
 
-            System.out.println("Deseja imprimir em qual ordem:");
-            System.out.println("1. pre ordem");
-            System.out.println("2. em ordem");
-            System.out.println("3. pos ordem");
-            System.out.println("4. em nivel");
+            System.out.println("""
+                    Deseja imprimir em qual ordem:
+                    pre ordem
+                    2. em ordem
+                    3. pos ordem
+                    4. em nivel
+                    ->\s""");
             int opt = scn.nextInt();
-            switch(opt) {
-                case 1:
-                    current.printPreOrder();
-                    break;
-                case 2:
-                    current.printInOrder();
-                    break;
-                case 3:
-                    current.printPostOrder();
-                    break;
-                case 4:
-                    byId.printLevelOrder();
-                    break;
+
+            switch (opt) {
+                case 1 -> current.printPreOrder();
+                case 2 -> current.printInOrder();
+                case 3 -> current.printPostOrder();
+                case 4 -> byId.printLevelOrder();
             }
         } catch (InputMismatchException e) {
             System.out.println("faz direito ai porra");

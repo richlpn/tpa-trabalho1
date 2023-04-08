@@ -7,9 +7,15 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
+    /* CONFIGURAÇÕES DE GERAÇÃO DE ARQUIVOS
+    * TAM == QUANTIDADE DE ALUNOS GERADOS
+    * tipoArquivo == Os ID dos alunos serão crescente(Ordenados) ou não
+    * */
+    private static final int TAM = 5000;
+    private static final TipoArquivo tipoArquivo = TipoArquivo.BALANCEADO;
+
     public static void main(String[] args) {
-        int TAM = 5000;
-        TipoArquivo tipoArquivo = TipoArquivo.ORDENADO;
+
         GeradorArquivos geradorArquivos = new GeradorArquivos();
         String nomeArquivo = "entrada";
 
@@ -48,8 +54,7 @@ public class Main {
 
         CommandLineInterface cli = new CommandLineInterface(arvoreMatricula,
                                                             arvoreNome);
-        // arvoreMatricula.printPreOrder();
-        cli.main();
+        cli.mainloop();
     }
 
     private static String[][] readFile(String fileName) {
