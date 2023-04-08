@@ -1,4 +1,6 @@
 import Aluno.*;
+import geradorarquivos.GeradorArquivos;
+import geradorarquivos.GeradorArquivos.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,13 +8,28 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
+        int TAM = 5000;
+        TipoArquivo tipoArquivo = TipoArquivo.ORDENADO;
+        GeradorArquivos geradorArquivos = new GeradorArquivos();
+        String nomeArquivo = "entrada";
+
+        if(tipoArquivo == TipoArquivo.ORDENADO) {
+            nomeArquivo+="Ordenada";
+            geradorArquivos.geraArqOrdenado(TAM);
+        }
+        else{
+            nomeArquivo+="Balanceada";
+            geradorArquivos.geraArqBalanceado(TAM);
+        }
+
+        nomeArquivo += TAM + ".txt";
         AlunoComparators.CompareByName compareByName = new AlunoComparators.CompareByName();
         AlunoComparators.CompareByID compareByID = new AlunoComparators.CompareByID();
         BinaryTree<Aluno> arvoreNome = new BinaryTree<>(compareByName);
         BinaryTree<Aluno> arvoreMatricula = new BinaryTree<>(compareByID);
 
         System.out.println("Lendo arquivo de entrada.");
-        String[][] alunos = readFile("entradaBalanceada1000.txt");
+        String[][] alunos = readFile(nomeArquivo);
         System.out.println("Arquivo de entrada lido.");
         Aluno aluno;
 

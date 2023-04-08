@@ -22,7 +22,7 @@ public class GeradorArquivos {
     final Random rand = new Random();
     final int matriculaBase = 2000000000;
 
-    private enum TipoArquivo{ORDENADO, BALANCEADO;};
+    public enum TipoArquivo{ORDENADO, BALANCEADO;};
     
     private boolean ehVogal (char c){
         for (char l: vogais){
