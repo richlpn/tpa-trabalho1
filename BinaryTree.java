@@ -65,15 +65,15 @@ public class BinaryTree<T> {
     //     int res = comp.compare(node.getValue(), value);
 
     //     // Se o no atual for menor que o valor a ser achado, procurar nos a
-    //     // direita
-    //     if (res < 0) return search(node.getRightNode(), value);
+    //     // esquerda
+    //     if (res < 0) return search(node.getLeftNode(), value);
 
     //         //Se o valor foi encontrado
     //     else if (res == 0) return node.getValue();
 
     //         // Se o no atual for maior que o valor a ser achado, procurar nos
-    //         // a esquerda
-    //     else return search(root.getLeftNode(), value);
+    //         // a direta
+    //     else return search(root.getRightNode(), value);
     //}
 
     private Node<T> removeMinimum(Node<T> root, Node<T> parent) {
