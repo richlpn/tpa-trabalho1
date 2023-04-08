@@ -43,8 +43,8 @@ public class Main {
         }
         System.out.println("Dados de alunos gravados.");
         System.out.println("Tamanho da arvore por nome: " + arvoreNome.size());
-        System.out.println("Tamanho da arvore por matricula: " + arvoreMatricula.size());
-        System.out.println();
+        System.out.println("Tamanho da arvore por matricula: " + arvoreMatricula.size() + "\n");
+
 
         CommandLineInterface cli = new CommandLineInterface(arvoreMatricula,
                                                             arvoreNome);

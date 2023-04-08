@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class BinaryTree<T> {
-    private Comparator<T> comp;
+    private final Comparator<T> comp;
     private Node<T> root;
 
     public BinaryTree(Comparator<T> comp) {
@@ -17,10 +17,10 @@ public class BinaryTree<T> {
     public void insert(T value) {
         if (root == null)
             this.root = new Node<T>(value);
-        else insert(this.root, value);
+        else insert(this.root, new Node<T>(value));
     }
 
-    private void insert(Node<T> node, T value) {
+    private void insert(Node<T> node, Node<T> newNode) {
         /*
         Se "value" é menor que o valor do nó, ele verifica se o nó à esquerda é nulo.
         Se for,ele cria um novo nó com o valor e define-o como filho esquerdo do nó atual.
@@ -30,19 +30,21 @@ public class BinaryTree<T> {
 
         Se o valor já existe na árvore, o método imprime uma mensagem de erro e não insere o valor novamente.
         */
-        if (comp.compare(node.getValue(), value) > 0) {
+        int resultComp = comp.compare(node.getValue(), newNode.getValue());
+        if (resultComp > 0) {
 
             if (node.getRightNode() == null)
-                node.setRightNode(new Node<>(value));
+                node.setRightNode(newNode);
             else
-                insert(node.getRightNode(), value);
+                insert(node.getRightNode(), newNode);
 
-        } else if (comp.compare(node.getValue(), value) < 0) {
+        }
+        else if (resultComp < 0) {
 
             if (node.getLeftNode() == null)
-                node.setLeftNode(new Node<>(value));
+                node.setLeftNode(newNode);
             else
-                insert(node.getLeftNode(), value);
+                insert(node.getLeftNode(), newNode);
 
         } else
             System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
@@ -210,8 +212,6 @@ public class BinaryTree<T> {
             return heightLeft;
         else if (heightLeft < heightRight)
             return heightRight;
-        else if (heightLeft != -1)
-            return heightLeft;
         return heightAccumulator;
     }
 
@@ -267,7 +267,6 @@ public class BinaryTree<T> {
     }
 
     public void printLevelOrder () {
-        // funciona pfv
         if (root == null)
             return;
 
@@ -291,28 +290,23 @@ public class BinaryTree<T> {
     }
 
     public Node<T> getSmallestNode () {
-        if (root == null)
-            return null;
+        if (root == null) return null;
+        else if (root.getLeftNode() == null) return root;
         return getSmallestNode(root.getLeftNode());
     }
     private Node<T> getSmallestNode (Node<T> node) {
-        if (node.getLeftNode() == null)
-            return node;
+        if (node.getLeftNode() == null) return node;
         return getSmallestNode(node.getLeftNode());
     }
 
     public Node<T> getBiggestNode () {
-        if (root == null)
-            return null;
-        if(root.getRightNode() == null) return root;
+        if (root == null) return null;
+        else if (root.getRightNode() == null) return root;
         return getBiggestNode(root.getRightNode());
     }
     private Node<T> getBiggestNode (Node<T> root) {
 
-        Node<T> node = root.getRightNode();
-        while(node.getRightNode() != null){
-            node = node.getRightNode();
-        }
-        return node;
+        if(root.getRightNode() == null) return root;
+        return getBiggestNode(root.getRightNode());
     }
 }
