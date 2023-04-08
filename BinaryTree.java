@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class BinaryTree<T> {
+    /* Autores:
+     * Lucas Vieira da Silva
+     * Richard Lucas Pereria Nunes
+     * */
     private final Comparator<T> comp;
     private Node<T> root;
 
@@ -32,17 +36,17 @@ public class BinaryTree<T> {
         int resultComp = comp.compare(node.getValue(), newNode.getValue());
         if (resultComp > 0) {
 
-            if (node.getRightNode() == null)
-                node.setRightNode(newNode);
-            else
-                insert(node.getRightNode(), newNode);
-
-        } else if (resultComp < 0) {
-
             if (node.getLeftNode() == null)
                 node.setLeftNode(newNode);
             else
                 insert(node.getLeftNode(), newNode);
+
+        } else if (resultComp < 0) {
+
+            if (node.getRightNode() == null)
+                node.setRightNode(newNode);
+            else
+                insert(node.getRightNode(), newNode);
 
         } else
             System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
@@ -66,11 +70,12 @@ public class BinaryTree<T> {
                 System.out.println("Numero de nos percorridos ate encontrar elemento: " + count);
                 return current.getValue();
             }
-            // Valor é menor que o atual. ir para esquerda
-            else if (resultComp < 0) current = current.getLeftNode();
+            // Se o valor do no atual e menor que o no a ser achado, ir
+            // para direita
+            else if (resultComp < 0) current = current.getRightNode();
 
                 // Valor é maior. ir para direita
-            else current = current.getRightNode();
+            else current = current.getLeftNode();
 
         }
         return null;
