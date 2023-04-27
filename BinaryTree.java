@@ -9,8 +9,8 @@ public class BinaryTree<T> {
      * Lucas Vieira da Silva
      * Richard Lucas Pereira Nunes
      * */
-    private final Comparator<T> comp;
-    private Node<T> root;
+    protected final Comparator<T> comp;
+    protected Node<T> root;
 
     public BinaryTree(Comparator<T> comp) {
         this.comp = comp;
@@ -25,13 +25,17 @@ public class BinaryTree<T> {
 
     private void insert(Node<T> node, Node<T> newNode) {
         /*
-        Se "value" é menor que o valor do nó, ele verifica se o nó à esquerda é nulo.
-        Se for,ele cria um novo nó com o valor e define-o como filho esquerdo do nó atual.
-        Se não, ele chama recursivamente o método insert() com o nó à esquerda e o valor.
+        Se o valor de newNode é menor que o valor de node, ele verifica se o nó
+        à esquerda de node é nulo; se for, newNode torna-se o filho esquerdo de
+        node; se não, ele chama recursivamente o método insert() com o nó à
+        esquerda e newNode.
 
-        Se o valor é maior que o valor do nó, ele segue um processo semelhante com a subárvore direita.
+        Se o valor de newNode é maior que o valor de node, ele segue um processo
+        semelhante com a subárvore direita.
 
-        Se o valor já existe na árvore, o método imprime uma mensagem de erro e não insere o valor novamente.
+        Se o valor de newNode não é nem menor e nem maior que o valor de node
+        então o valor já existe na árvore.  Uma mensagem de erro é escrita e
+        nenhum nó é adicionado à árvore.
         */
         int resultComp = comp.compare(node.getValue(), newNode.getValue());
         if (resultComp > 0) {
