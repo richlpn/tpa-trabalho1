@@ -9,6 +9,7 @@ public class AVLTree<T> extends BinaryTree<T> {
      * Lucas Vieira da Silva
      * Richard Lucas Pereira Nunes
      * */
+     // seria tao mais facil utilizar nos duplamente ligados
 
     public AVLTree (Comparator<T> comp) {
         super(comp);
@@ -16,14 +17,14 @@ public class AVLTree<T> extends BinaryTree<T> {
 
     private Node<T> leftRotation (Node<T> root) {
         Node<T> newRoot = root.getRightNode();
-        root.setLeftNode(newRoot.getLeftNode());
+        root.setRightNode(newRoot.getLeftNode());
         newRoot.setLeftNode(root);
         return newRoot;
     }
 
     private Node<T> rightRotation (Node<T> root) {
         Node<T> newRoot = root.getLeftNode();
-        root.setRightNode(newRoot.getRightNode());
+        root.setLeftNode(newRoot.getRightNode());
         newRoot.setRightNode(root);
         return newRoot;
     }
@@ -47,60 +48,116 @@ public class AVLTree<T> extends BinaryTree<T> {
 
     }
 
-    private Node<T> checkAndRotate (Node<T> node) {
-        Node<T> newNode;
+    private void checkAndRotate (
+        Node<T> node,
+        Node<T> parent,
+        boolean parentIsLeft
+    ) {
         int balanceFactor = node.balanceFactor();
-        int leftBalanceFactor = node.getLeftNode().balanceFactor();
-        int rightBalanceFactor = node.getRightNode().balanceFactor();
+        // porque o trecho abaixo nao funciona?
+        // if (balanceFactor > 2)
+        //     checkAndRotate(node.getRightNode(), node, true);
+        // else if (balanceFactor < -2)
+        //     checkAndRotate(node.getLeftNode(), node, false);
+
+        int leftBalanceFactor = 0;
+        if (node.getLeftNode() != null)
+            leftBalanceFactor = node.getLeftNode().balanceFactor();
+        int rightBalanceFactor = 0;
+        if (node.getRightNode() != null)
+            rightBalanceFactor = node.getRightNode().balanceFactor();
+
+        if (leftBalanceFactor != 0)
+            checkAndRotate(node.getLeftNode(), node, false);
+        if (rightBalanceFactor != 0)
+            checkAndRotate(node.getRightNode(), node, true);
 
         if (balanceFactor == 2) {
 
             if (rightBalanceFactor > 0) {
-                newNode = leftRotation(node);
-                propagateHeightCorrection(newNode);
-                return newNode;
+
+                if (parent == null) {
+                    root = leftRotation(node);
+                    propagateHeightCorrection(root);
+                } else {
+
+                    if (parentIsLeft)
+                        parent.setRightNode(leftRotation(node));
+                    else
+                        parent.setLeftNode(leftRotation(node));
+                    propagateHeightCorrection(parent);
+
+                }
+
             } else if (rightBalanceFactor < 0) {
-                newNode = rightLeftRotation(node);
-                propagateHeightCorrection(newNode);
-                return newNode;
+
+                if (parent == null) {
+                    root = rightLeftRotation(node);
+                    propagateHeightCorrection(root);
+                } else {
+                    if (parentIsLeft)
+                        parent.setRightNode(rightLeftRotation(node));
+                    else
+                        parent.setLeftNode(rightLeftRotation(node));
+                    propagateHeightCorrection(parent);
+                }
+
             }
 
         } else if (balanceFactor == -2) {
 
             if (leftBalanceFactor > 0) {
-                newNode = leftRightRotation(node);
-                propagateHeightCorrection(newNode);
-                return newNode;
+
+                if (parent == null) {
+                    root = leftRightRotation(node);
+                    propagateHeightCorrection(root);
+                } else {
+                    if (parentIsLeft)
+                        parent.setRightNode(leftRightRotation(node));
+                    else
+                        parent.setLeftNode(leftRightRotation(node));
+                    propagateHeightCorrection(parent);
+                }
+
             } else if (leftBalanceFactor < 0) {
-                newNode = rightRotation(node);
-                propagateHeightCorrection(newNode);
-                return newNode;
+
+                if (parent == null) {
+                    root = rightRotation(node);
+                    propagateHeightCorrection(root);
+                } else {
+                    if (parentIsLeft)
+                        parent.setRightNode(rightRotation(node));
+                    else
+                        parent.setLeftNode(rightRotation(node));
+                    propagateHeightCorrection(parent);
+                }
+
             }
 
         }
-        return node;
     }
 
     @Override
     public void insert (T value) {
+        // onde colocar correcao de altura?
         if (root == null) {
             root = new Node<>(value);
-        } else
+        } else {
             insert(root, new Node<>(value));
+            checkAndRotate(root, null, false);
+        }
     }
 
-    private boolean insert (Node<T> node, Node<T> newNode) {
+    private void insert (Node<T> node, Node<T> newNode) {
         int resultComp = comp.compare(node.getValue(), newNode.getValue());
         if (resultComp > 0) {
 
             if (node.getLeftNode() == null) {
                 node.setLeftNode(newNode);
                 node.incHeightByOne();
-                return true;
-            } else if (insert(node.getLeftNode(), newNode)) {
-                node.setLeftNode(checkAndRotate(node.getLeftNode()));
+            } else {
                 node.incHeightByOne();
-                return true;
+                insert(node.getLeftNode(), newNode);
             }
 
         } else if (resultComp < 0) {
@@ -108,15 +165,14 @@ public class AVLTree<T> extends BinaryTree<T> {
             if (node.getRightNode() == null) {
                 node.setRightNode(newNode);
                 node.incHeightByOne();
-                return true;
-            } else if (insert(node.getRightNode(), newNode)) {
-                node.setRightNode(checkAndRotate(node.getRightNode()));
+            } else {
                 node.incHeightByOne();
-                return true;
+                insert(node.getRightNode(), newNode);
             }
 
+        } else {
+            System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
+            System.err.println("No: "+newNode);
         }
-        System.err.println("Tentativa de inserir no ja existente na arvore ignorada.");
-        return false;
     }
 }

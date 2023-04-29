@@ -61,8 +61,8 @@ public class Node<T> {
     }
 
     public int balanceFactor () {
-        int leftHeight = 0;
-        int rightHeight = 0;
+        int leftHeight = -1;
+        int rightHeight = -1;
         if (leftNode != null)
             leftHeight = leftNode.getHeight();
         if (rightNode != null)
