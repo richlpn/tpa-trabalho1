@@ -54,11 +54,6 @@ public class AVLTree<T> extends BinaryTree<T> {
         boolean parentIsLeft
     ) {
         int balanceFactor = node.balanceFactor();
-        // porque o trecho abaixo nao funciona?
-        // if (balanceFactor > 2)
-        //     checkAndRotate(node.getRightNode(), node, true);
-        // else if (balanceFactor < -2)
-        //     checkAndRotate(node.getLeftNode(), node, false);
 
         int leftBalanceFactor = 0;
         if (node.getLeftNode() != null)
@@ -72,7 +67,7 @@ public class AVLTree<T> extends BinaryTree<T> {
         if (rightBalanceFactor != 0)
             checkAndRotate(node.getRightNode(), node, true);
 
-        if (balanceFactor == 2) {
+        if (balanceFactor > 0) {
 
             if (rightBalanceFactor > 0) {
 
@@ -104,7 +99,7 @@ public class AVLTree<T> extends BinaryTree<T> {
 
             }
 
-        } else if (balanceFactor == -2) {
+        } else if (balanceFactor < 0) {
 
             if (leftBalanceFactor > 0) {
 
