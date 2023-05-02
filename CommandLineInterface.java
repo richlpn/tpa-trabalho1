@@ -182,14 +182,13 @@ public class CommandLineInterface {
 
             System.out.println("Quantidade total de elementos: " + current.size());
             System.out.println("Altura da arvore: " + current.height());
-            if (optType == 1)
+            if (optType == 1) {
                 System.out.println("Aluno com maior matricula: " + current.getBiggestNode().getValue());
-            else
-                System.out.println("Aluno com primeiro nome: " + current.getBiggestNode().getValue());
-            if (optType == 1)
                 System.out.println("Aluno com menor matricula: " + current.getSmallestNode().getValue());
-            else
+            } else {
+                System.out.println("Aluno com primeiro nome: " + current.getBiggestNode().getValue());
                 System.out.println("Aluno com ultimo nome: " + current.getSmallestNode().getValue());
+            }
 
         } catch (InputMismatchException e) {
             System.out.println("Erro ao processar opcao de estatistica da arvore");

@@ -1,20 +1,13 @@
-import java.util.Comparator;
 
 public class Node<T> {
     private T value;
-    private Node<T> leftNode;
-    private Node<T> rightNode;
+    private Node<T> leftNode = null;
+    private Node<T> rightNode = null;
+    private int height = 0;
 
-    public Node(Comparator<T> comp) {
-        this.value = null;
-        this.leftNode = null;
-        this.rightNode = null;
-    }
 
     public Node(T value) {
         this.value = value;
-        this.leftNode = null;
-        this.rightNode = null;
     }
 
     // ######## GET & SETTERS
@@ -42,6 +35,22 @@ public class Node<T> {
         this.rightNode = rightNode;
     }
 
+    public int getHeight () {
+        return height;
+    }
+
+    public void setHeight (int newHeight) {
+        height = newHeight;
+    }
+
+    public void incHeightByOne () {
+        ++height;
+    }
+
+    public void decHeightByOne () {
+        --height;
+    }
+
     public int numChildren() {
         int res = 0;
         if (this.getLeftNode() != null)
@@ -49,6 +58,17 @@ public class Node<T> {
         if (this.getRightNode() != null)
             ++res;
         return res;
+    }
+
+    public int balanceFactor () {
+        int leftHeight = -1;
+        int rightHeight = -1;
+        if (leftNode != null)
+            leftHeight = leftNode.getHeight();
+        if (rightNode != null)
+            rightHeight = rightNode.getHeight();
+
+        return rightHeight - leftHeight;
     }
 
     @Override
